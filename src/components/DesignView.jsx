@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import mockRooms from "../data/mockRooms";
 import ProductPanel from "./ProductPanel";
 
@@ -422,7 +422,6 @@ function RoomSwitcher({ currentRoom, onSelect }) {
 /* ─── Main view ──────────────────────────────────────────────── */
 function DesignView() {
   const location = useLocation();
-  const navigate = useNavigate();
   const prompt   = location.state?.prompt ?? null;
 
   const [activeRoom,    setActiveRoom]    = useState(location.state?.room ?? mockRooms[0]);
