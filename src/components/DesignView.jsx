@@ -3,16 +3,16 @@ import { useLocation } from "react-router-dom";
 import mockRooms from "../data/mockRooms";
 import ProductPanel from "./ProductPanel";
 
-const IKEA_BLUE      = "#0058AB";
+const IKEA_BLUE      = "#0058A3";
 const IKEA_BLUE_DARK = "#004691";
 const IKEA_YELLOW    = "#FFCC00";
 const IKEA_SANS      = "'Noto Sans', 'Helvetica Neue', sans-serif";
 
 const THINKING_LINES = [
-  "Analyzing your space…",
-  "Matching IKEA products to your style…",
-  "Calculating your budget…",
-  "Generating your design…",
+  "Choosing the perfect pieces…",
+  "Balancing style and budget…",
+  "Adding Scandinavian warmth…",
+  "Almost there…",
 ];
 
 const REVEAL_DURATION = 2800;
@@ -28,58 +28,50 @@ const METRICS = [
   { label: "Time to decision",         value: "−25%", dir: "down" },
 ];
 
-/* ─── Thinking dots (pulsing loader) ─────────────────────────── */
-function ThinkingDots() {
+/* ─── Premium loading screen ─────────────────────────────────── */
+function LoadingScreen({ thinkingLine }) {
   return (
-    <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          style={{
-            width: 8, height: 8, borderRadius: "50%",
-            backgroundColor: "#fff",
-            display: "inline-block",
-            animation: `thinkingBounce 1.1s ease-in-out ${i * 0.19}s infinite`,
-          }}
-        />
-      ))}
-    </span>
-  );
-}
+    <div
+      className="fade-in-up delay-0"
+      style={{
+        position: "absolute", inset: 0, zIndex: 50,
+        backgroundColor: "#ffffff",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        gap: 20,
+      }}
+    >
+      <h2 style={{
+        fontFamily: IKEA_SANS, fontSize: "clamp(1.4rem, 3vw, 1.9rem)",
+        fontWeight: 700, color: "#1a1a1a",
+        letterSpacing: "-0.02em", margin: 0,
+      }}>
+        Designing your space...
+      </h2>
 
-/* ─── Thinking overlay on room image ─────────────────────────── */
-function RevealOverlay({ thinkingLine, prompt }) {
-  return (
-    <div style={{
-      position: "absolute", inset: 0, zIndex: 30,
-      display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center", gap: 18,
-      backgroundColor: "rgba(0,0,0,0.35)",
-      backdropFilter: "blur(2px)",
-      transition: "opacity 0.4s ease",
-    }}>
-      <ThinkingDots />
       <p
-        className="fade-in-up delay-0"
         key={thinkingLine}
+        className="fade-in-up delay-0"
         style={{
-          fontFamily: IKEA_SANS, fontSize: "1rem", fontWeight: 500,
-          color: "#fff", letterSpacing: "0.01em",
-          textShadow: "0 1px 6px rgba(0,0,0,0.4)",
-          margin: 0,
+          fontFamily: IKEA_SANS, fontSize: "0.92rem", fontWeight: 400,
+          color: "#999", margin: 0, letterSpacing: "0.01em",
         }}
       >
         {THINKING_LINES[thinkingLine]}
       </p>
-      {prompt && (
-        <p style={{
-          fontFamily: IKEA_SANS, fontSize: "0.82rem", color: "rgba(255,255,255,0.7)",
-          maxWidth: 360, textAlign: "center", fontStyle: "italic",
-          margin: 0, padding: "0 24px",
-        }}>
-          "{prompt}"
-        </p>
-      )}
+
+      {/* Thin animated progress bar */}
+      <div style={{
+        width: 120, height: 3, borderRadius: 2,
+        backgroundColor: "#f0f0f0", overflow: "hidden",
+        marginTop: 8,
+      }}>
+        <div style={{
+          width: "40%", height: "100%", borderRadius: 2,
+          backgroundColor: IKEA_BLUE,
+          animation: "loadingSlide 1.4s ease-in-out infinite",
+        }} />
+      </div>
     </div>
   );
 }
@@ -465,11 +457,11 @@ function DesignView() {
 
   return (
     <>
-      {/* Keyframe for thinking dots */}
       <style>{`
-        @keyframes thinkingBounce {
-          0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-          40%            { transform: translateY(-6px); opacity: 1; }
+        @keyframes loadingSlide {
+          0%   { transform: translateX(-100%); }
+          50%  { transform: translateX(200%); }
+          100% { transform: translateX(-100%); }
         }
       `}</style>
 
@@ -477,7 +469,9 @@ function DesignView() {
       {showMetrics && <MetricsOverlay onContinue={handleContinueToIkea} onClose={() => setShowMetrics(false)} />}
 
       {/* ── Outer wrapper — flex column so action bar is part of flow ── */}
-      <div className="design-outer" style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 112px)", backgroundColor: "#fff" }}>
+      <div className="design-outer" style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 112px)", backgroundColor: "#f7f7f7", position: "relative" }}>
+
+        {revealing && <LoadingScreen thinkingLine={thinkingLine} />}
 
         {/* ── Main row ── */}
         <div className="design-main-row" style={{ display: "flex", flex: 1, overflow: "hidden" }}>
@@ -485,19 +479,19 @@ function DesignView() {
           {/* LEFT – room visual (70%) */}
           <div className="design-room-panel" style={{
             flex: "0 0 70%", position: "relative", overflow: "hidden",
-            backgroundColor: "#f0f0f0",
+            backgroundColor: "#ffffff",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
             {/* Styled (design) image — always mounted */}
             <img
               src={activeRoom?.styledImageUrl ?? DEFAULT_IMAGE}
               alt={activeRoom?.label ?? "Generated room"}
-              className={revealing ? undefined : "fade-in-up delay-0"}
               style={{
                 position: "absolute",
                 maxWidth: "100%", maxHeight: "100%",
-                objectFit: "contain", display: "block",
-                opacity: (showOriginal || revealing) ? 0 : 1,
+                objectFit: "contain", objectPosition: "center",
+                display: "block",
+                opacity: showOriginal ? 0 : 1,
                 transition: "opacity 0.6s ease",
               }}
             />
@@ -508,8 +502,9 @@ function DesignView() {
               style={{
                 position: "absolute",
                 maxWidth: "100%", maxHeight: "100%",
-                objectFit: "contain", display: "block",
-                opacity: (showOriginal || revealing) ? 1 : 0,
+                objectFit: "contain", objectPosition: "center",
+                display: "block",
+                opacity: showOriginal ? 1 : 0,
                 transition: "opacity 0.6s ease",
               }}
             />
@@ -517,9 +512,6 @@ function DesignView() {
               position: "absolute", inset: 0, pointerEvents: "none",
               background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.2) 100%)",
             }} />
-
-            {/* Thinking overlay during reveal */}
-            {revealing && <RevealOverlay thinkingLine={thinkingLine} prompt={prompt} />}
 
             {/* AI badge + room switcher + original toggle — hidden during reveal */}
             <div className={`design-badges${revealed ? " fade-in-up delay-1" : ""}`} style={{
@@ -635,7 +627,7 @@ function DesignView() {
             justifyContent: "flex-end",
             gap: 12,
             padding: "14px 24px",
-            borderTop: "1px solid #eeeeee",
+            borderTop: "1px solid #f0f0f0",
             backgroundColor: "#ffffff",
             opacity: revealed ? undefined : 0,
             pointerEvents: revealed ? "auto" : "none",

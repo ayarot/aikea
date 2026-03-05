@@ -1,4 +1,4 @@
-const IKEA_BLUE   = "#0058AB";
+const IKEA_BLUE   = "#0058A3";
 const IKEA_YELLOW = "#FFCC00";
 const IKEA_SANS   = "'Noto Sans', 'Helvetica Neue', sans-serif";
 
@@ -15,7 +15,7 @@ function ExternalLinkIcon() {
 }
 
 function ProductItem({ product, isActive, onSelect }) {
-  const { name, category, price, description, imageUrl, productUrl } = product;
+  const { name, category, price, description, image, productUrl } = product;
 
   return (
     <li
@@ -43,7 +43,7 @@ function ProductItem({ product, isActive, onSelect }) {
         }}
       >
         <img
-          src={imageUrl}
+          src={image}
           alt={name}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           onError={(e) => { e.currentTarget.style.display = "none"; }}
@@ -142,7 +142,7 @@ function ProductPanel({ products, activeId, onSelect, revealed = true }) {
         flex: "0 0 30%",
         display: "flex",
         flexDirection: "column",
-        borderLeft: "1px solid #eeeeee",
+        borderLeft: "1px solid #f0f0f0",
         backgroundColor: "#ffffff",
         overflow: "hidden",
       }}
@@ -225,7 +225,7 @@ function ProductPanel({ products, activeId, onSelect, revealed = true }) {
       <div
         className={revealed ? `fade-in-up delay-${Math.min(products.length + 1, 8)}` : undefined}
         style={{
-          borderTop: "1px solid #eeeeee",
+          borderTop: "1px solid #f0f0f0",
           padding: "14px 16px",
           flexShrink: 0,
           backgroundColor: "#fafafa",

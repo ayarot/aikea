@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 const IKEA_SANS = "'Noto Sans', 'Helvetica Neue', sans-serif";
-const IKEA_BLUE = "#0058AB";
+const IKEA_BLUE = "#0058A3";
 
 function Header() {
   const navigate = useNavigate();

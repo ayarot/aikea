@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const IKEA_BLUE      = "#0058AB";
+const IKEA_BLUE      = "#0058A3";
 const IKEA_BLUE_DARK = "#004691";
 const IKEA_YELLOW    = "#FFCC00";
 const IKEA_SANS      = "'Noto Sans', 'Helvetica Neue', sans-serif";
 
 const FALLBACK_PROMPTS = [
   "Create a warm Scandinavian living room under $800.",
-  "Turn this space into a minimalist modern home office.",
-  "Design a cozy small apartment for a young couple.",
   "Make this room family-friendly with smart storage.",
   "Add color and personality while keeping it affordable.",
 ];
@@ -181,7 +179,7 @@ function PromptSelection() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: "56px 24px 48px",
+          padding: "64px 24px 56px",
           boxSizing: "border-box",
         }}
       >

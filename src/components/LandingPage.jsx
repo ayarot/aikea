@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const IKEA_BLUE      = "#0058AB";
+const IKEA_BLUE      = "#0058A3";
 const IKEA_BLUE_DARK = "#004691";
 const IKEA_YELLOW    = "#FFCC00";
 const IKEA_SANS      = "'Noto Sans', 'Helvetica Neue', sans-serif";
@@ -35,7 +35,7 @@ function Wordmark({ size = "2.2rem" }) {
         fontSize: size,
         letterSpacing: "0.06em",
         textTransform: "uppercase",
-        color: IKEA_BLUE,
+        color: "#ffffff",
         lineHeight: 1,
       }}
     >
@@ -52,13 +52,41 @@ function LandingPage() {
     <div
       style={{
         minHeight: "calc(100vh - 112px)",
-        backgroundColor: "#ffffff",
+        backgroundColor: "#000",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: "0 24px",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Background video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      >
+        <source src="/video_landpage_aikea.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for text readability */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.45)",
+        zIndex: 1,
+      }} />
+
       <div
         style={{
           maxWidth: 900,
@@ -67,6 +95,8 @@ function LandingPage() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          position: "relative",
+          zIndex: 2,
         }}
       >
         {/* ── Wordmark ── */}
@@ -91,7 +121,7 @@ function LandingPage() {
             fontFamily: IKEA_SANS,
             fontSize: "clamp(2.5rem, 6vw, 4rem)",
             fontWeight: 800,
-            color: "#111111",
+            color: "#ffffff",
             letterSpacing: "-0.03em",
             lineHeight: 1.1,
             margin: "32px 0 0",
@@ -109,7 +139,7 @@ function LandingPage() {
             fontFamily: IKEA_SANS,
             fontSize: "1.2rem",
             fontWeight: 300,
-            color: "#666666",
+            color: "rgba(255,255,255,0.8)",
             maxWidth: 560,
             lineHeight: 1.7,
             margin: "28px auto 0",

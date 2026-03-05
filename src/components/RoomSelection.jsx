@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import mockRooms from "../data/mockRooms";
 
-const IKEA_BLUE = "#0058AB";
+const IKEA_BLUE = "#0058A3";
 const ROOMS = mockRooms;
 
 function UploadIcon() {
@@ -36,9 +36,9 @@ function UploadCard({ onClick }) {
       style={{
         width: "100%",
         aspectRatio: "4 / 3",
-        borderRadius: 16,
-        border: `2px dashed ${hovered ? IKEA_BLUE : "#c8d8e8"}`,
-        background: hovered ? "rgba(0,88,163,0.04)" : "#f7f9fc",
+        borderRadius: 28,
+        border: `2px dashed ${hovered ? IKEA_BLUE : "#dde4eb"}`,
+        background: hovered ? "rgba(0,88,163,0.04)" : "#fff",
         cursor: "pointer",
         display: "flex",
         flexDirection: "column",
@@ -102,7 +102,7 @@ function UploadCard({ onClick }) {
               fontWeight: 400,
             }}
           >
-            Photo from your home
+            Coming Soon
           </p>
         </div>
       </div>
@@ -119,20 +119,20 @@ function RoomCard({ room, onClick }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: "none",
+        background: "transparent",
         border: "none",
         padding: 0,
         cursor: "pointer",
-        borderRadius: 16,
+        borderRadius: 28,
         overflow: "hidden",
         position: "relative",
         display: "block",
         width: "100%",
-        aspectRatio: "4 / 3",
         boxShadow: hovered
-          ? "0 12px 36px rgba(0,0,0,0.14)"
-          : "0 2px 12px rgba(0,0,0,0.07)",
-        transition: "box-shadow 0.28s ease",
+          ? "0 24px 64px rgba(0,0,0,0.12)"
+          : "0 20px 60px rgba(0,0,0,0.08)",
+        transform: hovered ? "translateY(-4px)" : "translateY(0)",
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
         outline: "none",
       }}
       aria-label={`Select ${room.label}`}
@@ -142,11 +142,8 @@ function RoomCard({ room, onClick }) {
         alt={room.label}
         style={{
           width: "100%",
-          height: "100%",
-          objectFit: "cover",
+          height: "auto",
           display: "block",
-          transform: hovered ? "scale(1.06)" : "scale(1)",
-          transition: "transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
       <div
@@ -155,16 +152,15 @@ function RoomCard({ room, onClick }) {
           position: "absolute",
           inset: 0,
           background: hovered
-            ? "linear-gradient(to top, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)"
-            : "linear-gradient(to top, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.04) 50%, transparent 100%)",
-          transition: "background 0.28s ease",
-          borderRadius: 16,
+            ? "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 50%, transparent 100%)"
+            : "linear-gradient(to top, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.02) 45%, transparent 100%)",
+          transition: "background 0.3s ease",
         }}
       />
       <span
         style={{
           position: "absolute",
-          bottom: 16,
+          bottom: 20,
           left: 0,
           right: 0,
           textAlign: "center",
@@ -172,19 +168,19 @@ function RoomCard({ room, onClick }) {
           fontWeight: 600,
           fontSize: "0.95rem",
           letterSpacing: "0.01em",
-          textShadow: "0 1px 4px rgba(0,0,0,0.4)",
-          transform: hovered ? "translateY(-3px)" : "translateY(0)",
-          transition: "transform 0.28s ease",
-          padding: "0 12px",
+          textShadow: "0 1px 4px rgba(0,0,0,0.35)",
+          transform: hovered ? "translateY(-2px)" : "translateY(0)",
+          transition: "transform 0.3s ease",
+          padding: "0 16px",
         }}
       >
-        {room.label}
+        {room.label} Demo
       </span>
     </button>
   );
 }
 
-function ComingSoonModal({ onClose, onTryDemo }) {
+function ComingSoonModal({ onClose }) {
   return (
     <div
       onClick={onClose}
@@ -276,14 +272,13 @@ function ComingSoonModal({ onClose, onTryDemo }) {
             margin: "0 0 28px",
           }}
         >
-          Uploading your own room photo is our{" "}
-          <strong style={{ color: "#1a1a1a" }}>main feature</strong> - it's on
-          its way! In the meantime, explore the experience with one of our demo
-          rooms.
+          Custom uploads will be available soon.
+          <br />
+          <strong style={{ color: "#1a1a1a" }}>Try one of our interactive demos.</strong>
         </p>
 
         <button
-          onClick={onTryDemo}
+          onClick={onClose}
           style={{
             width: "100%",
             padding: "14px 0",
@@ -301,21 +296,7 @@ function ComingSoonModal({ onClose, onTryDemo }) {
           onMouseEnter={(e) => (e.currentTarget.style.background = "#004a8c")}
           onMouseLeave={(e) => (e.currentTarget.style.background = IKEA_BLUE)}
         >
-          Try the Demo!
-        </button>
-
-        <button
-          onClick={onClose}
-          style={{
-            background: "none",
-            border: "none",
-            color: "#aaa",
-            fontSize: "0.85rem",
-            cursor: "pointer",
-            padding: "4px 8px",
-          }}
-        >
-          Dismiss
+          Got it
         </button>
       </div>
     </div>
@@ -330,17 +311,11 @@ function RoomSelection() {
     navigate("/prompt", { state: { room } });
   };
 
-  const handleTryDemo = () => {
-    setShowModal(false);
-    navigate("/prompt", { state: { room: ROOMS[0] } });
-  };
-
   return (
     <>
       {showModal && (
         <ComingSoonModal
           onClose={() => setShowModal(false)}
-          onTryDemo={handleTryDemo}
         />
       )}
 
@@ -348,11 +323,11 @@ function RoomSelection() {
         className="fade-in-up delay-0"
         style={{
           minHeight: "calc(100vh - 120px)",
-          background: "linear-gradient(160deg, #ffffff 60%, #f0f4f8 100%)",
+          backgroundColor: "#FAFAFA",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: "56px 24px 48px",
+          padding: "64px 24px 56px",
           boxSizing: "border-box",
         }}
       >
@@ -395,15 +370,15 @@ function RoomSelection() {
           </p>
         </div>
 
-        {/* Grid — 6 cards = 2 full rows of 3 */}
         <div
           className="fade-in-up delay-1 room-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 20,
+            gap: 24,
             width: "100%",
             maxWidth: 900,
+            alignItems: "start",
           }}
         >
           {ROOMS.map((room, i) => (
