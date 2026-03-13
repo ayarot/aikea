@@ -15,7 +15,7 @@ function ExternalLinkIcon() {
 }
 
 function ProductItem({ product, isActive, onSelect }) {
-  const { name, category, price, description, image, productUrl } = product;
+  const { name, category, price, description, productUrl } = product;
 
   return (
     <li
@@ -30,26 +30,6 @@ function ProductItem({ product, isActive, onSelect }) {
         transition: "background-color 0.15s ease, border-color 0.15s ease",
       }}
     >
-      {/* Thumbnail */}
-      <div
-        style={{
-          flexShrink: 0,
-          width: 56,
-          height: 56,
-          borderRadius: 8,
-          overflow: "hidden",
-          backgroundColor: "#f5f5f5",
-          border: "1px solid #eee",
-        }}
-      >
-        <img
-          src={image}
-          alt={name}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          onError={(e) => { e.currentTarget.style.display = "none"; }}
-        />
-      </div>
-
       {/* Info */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8, marginBottom: 2 }}>

@@ -79,7 +79,7 @@ const mockRooms = [
     emptyImageUrl: "/images/rooms/empty_living_room.png",
     styledImageUrl: "/images/rooms/styled_living_room.png",
     prompts: [
-      "Create a warm Scandinavian living room under $800.",
+      "Create a warm Scandinavian living room under $900.",
       "Make this living room family-friendly with smart storage.",
       "Add bold personality while keeping it affordable.",
     ],
